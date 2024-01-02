@@ -1,10 +1,10 @@
 "use client";
 
-import { Inter } from "next/font/google";
+import React from "react";
 import "@/app/globals.css";
-import Header from "@/components/Header";
+import { Inter } from "next/font/google";
 import { useParams } from "next/navigation";
-
+import Header from "../../components/Header";
 const inter = Inter({ subsets: ["latin"] });
 
 interface RootLayoutProps {

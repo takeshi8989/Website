@@ -1,6 +1,5 @@
 import React from "react";
-import { data } from "@/data/index";
-import { Language } from "@/data/index";
+import { data, Language } from "../data/index";
 import Link from "next/link";
 
 interface Props {

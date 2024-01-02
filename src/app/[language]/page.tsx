@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Language, data } from "@/data";
+import { Language, data } from "../../data";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
