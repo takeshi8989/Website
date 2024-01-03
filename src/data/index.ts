@@ -7,14 +7,16 @@ export interface Article {
   updated_at: string;
   title: Record<Language, string>;
   description: Record<Language, string>;
-  tags: string[];
+  tags: Tag[];
   read_time_min: number;
   summary: Record<Language, string>;
 }
 
 export type Language = "en" | "ja";
 
-export const data = [
+type Tag = "New Year Resolution";
+
+export const data: Article[] = [
   {
     id: "new-year-resolution-2024",
     en: false,
