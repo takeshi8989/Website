@@ -1,5 +1,7 @@
 export interface Article {
   id: string;
+  en: boolean;
+  ja: boolean;
   author: string;
   created_at: string;
   updated_at: string;
@@ -14,43 +16,25 @@ export type Language = "en" | "ja";
 
 export const data = [
   {
-    id: "my-first-article",
+    id: "new-year-resolution-2024",
+    en: false,
+    ja: true,
     author: "Takeshi Hashimoto",
-    created_at: "2020-01-01",
-    updated_at: "2020-01-01",
+    created_at: "2024-01-02",
+    updated_at: "2024-01-02",
     title: {
-      en: "My message at COP: Invest in innovations that save and improve the most lives",
-      ja: "My First Article",
+      en: "My New Year Resolution 2024",
+      ja: "2024年の抱負「殻を破って成果を出す」",
     },
     description: {
-      en: "At the COP World Climate Action Summit, I spoke about how innovation is the key to tackling emissions and improving human welfare at the same time.",
-      ja: "This is my first article",
+      en: "I will start a new project in 2024.",
+      ja: "2023年の軽いまとめと2024年の抱負と目標",
     },
-    tags: ["Next.js", "TypeScript"],
+    tags: ["New Year Resolution"],
     read_time_min: 5,
     summary: {
-      en: "This is my first article",
-      ja: "This is my first article",
-    },
-  },
-  {
-    id: "my-second-article",
-    author: "Takeshi Hashimoto",
-    created_at: "2020-01-01",
-    updated_at: "2020-01-01",
-    title: {
-      en: "Now, our team is working on a new project",
-      ja: "My Second Article",
-    },
-    description: {
-      en: "Our team started a new project. We are very excited about it.",
-      ja: "This is my second article",
-    },
-    tags: ["Next.js", "TypeScript"],
-    read_time_min: 5,
-    summary: {
-      en: "This is my second article",
-      ja: "This is my second article",
+      en: "I will start a new project in 2024.",
+      ja: "新しいことをどんどんやる。ビジネス、英語、対人能力、人間力、あらゆるモノを継続的に成長させる。そしてビジネスにおいて目にみえる成果を出す。やるぞ！",
     },
   },
 ];
