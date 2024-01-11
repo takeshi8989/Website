@@ -20,7 +20,7 @@ export const data: Article[] = [
   {
     id: "new-year-resolution-2024",
     en: false,
-    ja: true,
+    ja: false,
     author: "Takeshi Hashimoto",
     created_at: "2024-01-02",
     updated_at: "2024-01-02",
