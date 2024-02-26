@@ -13,20 +13,29 @@ const Header = () => {
     router.push("/" + lang);
   };
 
+  const goHome = () => {
+    router.push("/");
+  };
+
   useEffect(() => {
-    const lang = localStorage.getItem("lang");
-    if (lang) {
-      router.push("/" + lang);
+    if (location.pathname === "/") {
+      const lang = localStorage.getItem("lang");
+      if (lang) {
+        router.push("/" + lang);
+      }
     }
   }, []);
 
   return (
-    <div className="h-16 bg-gray-200">
+    <div className="h-16 bg-white">
       <div className="flex items-center justify-between h-full px-4 mx-auto max-w-7xl sm:px-6">
         <div className="flex items-center">
-          <Link href="/" className="flex items-center text-black">
-            <p className="text-xl font-bold text-gray-900 mt-3">Takeshi Blog</p>
-          </Link>
+          {/* <Link
+            href={`/${localStorage.getItem("lang") || "en"}`}
+            className="flex items-center text-black"
+          >
+            <p className="text-xl font-bold text-gray-900 mt-1">Takeshi</p>
+          </Link> */}
         </div>
         <div className="flex items-center">
           {availableLangs.map((lang) => (

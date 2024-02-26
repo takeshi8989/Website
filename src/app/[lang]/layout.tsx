@@ -5,8 +5,8 @@ import { Metadata } from "next";
 import Header from "../../components/Header";
 
 export const metadata: Metadata = {
-  title: "Takeshi Blog",
-  description: "Blog Home"
+  title: "Takeshi",
+  description: "Home"
 };
 
 
