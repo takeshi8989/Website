@@ -13,6 +13,16 @@ const LocaleHome = () => {
 
   const availableArticles = getArticlesByLanguage(lang);
 
+  if (lang === "en") {
+    return (
+      <div className="container">
+        <p className="">
+          {`Once my English gets better, I'll translate existing articles I've written. I don't want to rely on machine translations or any other helps. Sorry, hang tight!`}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <div className="">
