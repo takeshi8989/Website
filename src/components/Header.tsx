@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
@@ -13,30 +12,19 @@ const Header = () => {
     router.push("/" + lang);
   };
 
-  const goHome = () => {
-    router.push("/");
-  };
-
   useEffect(() => {
-    if (location.pathname === "/") {
-      const lang = localStorage.getItem("lang");
-      if (lang) {
-        router.push("/" + lang);
-      }
+    const lang = localStorage.getItem("lang");
+    if (!lang) return;
+    const pathLang = location.pathname.split("/")[1];
+    if (location.pathname === "/" || pathLang !== lang) {
+      router.push("/" + lang);
     }
-  }, []);
+  }, [router]);
 
   return (
     <div className="h-16 bg-white">
       <div className="flex items-center justify-between h-full px-4 mx-auto max-w-7xl sm:px-6">
-        <div className="flex items-center">
-          {/* <Link
-            href={`/${localStorage.getItem("lang") || "en"}`}
-            className="flex items-center text-black"
-          >
-            <p className="text-xl font-bold text-gray-900 mt-1">Takeshi</p>
-          </Link> */}
-        </div>
+        <div className="flex items-center"></div>
         <div className="flex items-center">
           {availableLangs.map((lang) => (
             <div
