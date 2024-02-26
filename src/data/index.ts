@@ -16,7 +16,7 @@ export type Language = "en" | "ja";
 
 type Tag = "New Year Resolution";
 
-export const data: Article[] = [
+const data: Article[] = [
   {
     id: "new-year-resolution-2024",
     en: false,
@@ -38,5 +38,13 @@ export const data: Article[] = [
       en: "I will start a new project in 2024.",
       ja: "新しいことをどんどんやる。ビジネス、英語、対人能力、人間力、あらゆるモノを継続的に成長させる。そしてビジネスにおいて目にみえる成果を出す。やるぞ！",
     },
-  },
+  }
 ];
+
+export const getArticlesByLanguage = (lang: Language): Article[] => {
+  return data.filter((article) => article[lang]);
+};
+
+export const getArticleById = (id: string): Article | undefined => {
+  return data.find((article) => article.id === id);
+};

@@ -1,9 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import { Language, data } from "../../../data/index";
-import Heading from "../../../components/Heading";
-import Recommender from "../../../components/Recommender";
+import { Language, getArticleById } from "../../../data/index";
 
 export const metadata: Metadata = {
   title: "Article Title",
@@ -14,7 +12,7 @@ const Article = ({ params }: { params: { id: string; lang: string } }) => {
   const id = params.id;
   const lang = params.lang as Language;
 
-  const article = data.find((article) => article.id === params.id);
+  const article = getArticleById(id);
 
   if (!article || !lang) {
     return <div>404 {id}</div>;
@@ -39,10 +37,8 @@ const Article = ({ params }: { params: { id: string; lang: string } }) => {
   );
 
   return (
-    <div className="mt-24 container">
-      <Heading article={article} language={lang} />
+    <div className="container">
       <MDXContent />
-      <Recommender language={lang} />
     </div>
   );
 };
