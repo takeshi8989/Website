@@ -3,6 +3,7 @@
 import React from "react";
 import { Inter } from "next/font/google";
 import { useParams } from "next/navigation";
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         suppressHydrationWarning
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
