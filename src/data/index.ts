@@ -59,6 +59,28 @@ const data: Article[] = [
     },
     type: "Essay",
   },
+  {
+    id: "why-naruto-is-the-best",
+    en: false,
+    ja: true,
+    author: "Takeshi Hashimoto",
+    created_at: "2024-02-27",
+    updated_at: "2024-02-27",
+    title: {
+      en: "Why Naruto is the Best",
+      ja: "なぜNarutoが最高なのか",
+    },
+    description: {
+      en: "Naruto is the best.",
+      ja: "ナルトは最高だ。",
+    },
+    read_time_min: 5,
+    summary: {
+      en: "",
+      ja: "",
+    },
+    type: "Essay",
+  },
 ];
 
 export const getArticlesByLanguage = (lang: Language): Article[] => {
