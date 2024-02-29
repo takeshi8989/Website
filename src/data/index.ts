@@ -9,7 +9,7 @@ export interface Article {
   description: Record<Language, string>;
   read_time_min: number;
   summary: Record<Language, string>;
-  type: "Essay" | "Blog" | "Book" | "Movie" | "Music" | "Show";
+  type: "Essay" | "Review";
 }
 
 export type Language = "en" | "ja";
@@ -73,6 +73,28 @@ const data: Article[] = [
     description: {
       en: "Naruto is the best.",
       ja: "ナルトは最高だ。",
+    },
+    read_time_min: 5,
+    summary: {
+      en: "",
+      ja: "",
+    },
+    type: "Review",
+  },
+  {
+    id: "how-we-shape-ourselves",
+    en: false,
+    ja: true,
+    author: "Takeshi Hashimoto",
+    created_at: "2024-02-29",
+    updated_at: "2024-02-29",
+    title: {
+      en: "How We Shape Ourselves",
+      ja: "エゴと環境",
+    },
+    description: {
+      en: "How we shape ourselves.",
+      ja: "自分を形作るもの。",
     },
     read_time_min: 5,
     summary: {
