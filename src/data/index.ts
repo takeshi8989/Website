@@ -104,19 +104,19 @@ const data: Article[] = [
     type: "Essay",
   },
   {
-    id: "ai-and-society",
+    id: "ai-and-capitalism",
     en: false,
     ja: true,
     author: "Takeshi Hashimoto",
     created_at: "2024-03-02",
     updated_at: "2024-03-02",
     title: {
-      en: "AI and Society",
-      ja: "AIとこれからの社会",
+      en: "AI and Capitalism",
+      ja: "AIと資本主義",
     },
     description: {
-      en: "AI and society.",
-      ja: "AIとこれからの社会。",
+      en: "AI and capitalism.",
+      ja: "AIと資本主義。",
     },
     read_time_min: 5,
     summary: {
