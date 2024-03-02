@@ -103,6 +103,28 @@ const data: Article[] = [
     },
     type: "Essay",
   },
+  {
+    id: "ai-and-society",
+    en: false,
+    ja: true,
+    author: "Takeshi Hashimoto",
+    created_at: "2024-03-02",
+    updated_at: "2024-03-02",
+    title: {
+      en: "AI and Society",
+      ja: "AIとこれからの社会",
+    },
+    description: {
+      en: "AI and society.",
+      ja: "AIとこれからの社会。",
+    },
+    read_time_min: 5,
+    summary: {
+      en: "",
+      ja: "",
+    },
+    type: "Essay",
+  },
 ];
 
 export const getArticlesByLanguage = (lang: Language): Article[] => {
