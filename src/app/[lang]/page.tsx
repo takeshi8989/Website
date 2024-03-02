@@ -34,14 +34,14 @@ const LocaleHome = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    setSubmitLoading(true);
     e.preventDefault();
+    if (comment === "") return;
+    setSubmitLoading(true);
     await sendEmail();
     setSubmitLoading(false);
   };
 
   const sendEmail = async () => {
-    console.log(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY);
     if (formRef.current === null) return;
     try {
       const res = await emailjs.sendForm(
@@ -88,13 +88,13 @@ const LocaleHome = () => {
           onChange={(e) => setComment(e.target.value)}
         ></textarea>
         {submitDone && <p className="mt-2 text-black">{submitMessage}</p>}
-        {submitLoading && <p className="text-black">Sending...</p>}
-        {!submitLoading && !submitDone && (
+        {!submitDone && (
           <button
             className="bg-blue-500 text-white px-4 py-2 mt-2"
             type="submit"
+            disabled={submitLoading}
           >
-            Send
+            {!submitLoading ? "Send" : "Sending..."}
           </button>
         )}
       </form>
