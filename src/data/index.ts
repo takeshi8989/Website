@@ -40,7 +40,7 @@ const data: Article[] = [
   {
     id: "about-english",
     en: false,
-    ja: true,
+    ja: false,
     author: "Takeshi Hashimoto",
     created_at: "2024-02-26",
     updated_at: "2024-02-26",
@@ -62,7 +62,7 @@ const data: Article[] = [
   {
     id: "why-naruto-is-the-best",
     en: false,
-    ja: true,
+    ja: false,
     author: "Takeshi Hashimoto",
     created_at: "2024-02-27",
     updated_at: "2024-02-27",
