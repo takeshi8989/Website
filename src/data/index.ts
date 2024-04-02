@@ -125,6 +125,28 @@ const data: Article[] = [
     },
     type: "Essay",
   },
+  {
+    id: "the-power-of-unconscious-mind",
+    en: false,
+    ja: true,
+    author: "Takeshi Hashimoto",
+    created_at: "2024-04-01",
+    updated_at: "2024-04-01",
+    title: {
+      en: "The Power of Unconscious Mind",
+      ja: "無意識の力",
+    },
+    description: {
+      en: "The power of unconscious mind.",
+      ja: "無意識の力。",
+    },
+    read_time_min: 10,
+    summary: {
+      en: "",
+      ja: "",
+    },
+    type: "Essay",
+  },
 ];
 
 export const getArticlesByLanguage = (lang: Language): Article[] => {
