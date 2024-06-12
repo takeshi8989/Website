@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import { Language, getArticleById } from "../../../data/index";
+import { Language, getBlogById } from "@/data";
 
 export const metadata: Metadata = {
   title: "Article Title",
@@ -12,7 +12,7 @@ const Article = ({ params }: { params: { id: string; lang: string } }) => {
   const id = params.id;
   const lang = params.lang as Language;
 
-  const article = getArticleById(id);
+  const article = getBlogById(id);
 
   if (!article || !lang) {
     return <div>404 {id}</div>;
@@ -27,10 +27,10 @@ const Article = ({ params }: { params: { id: string; lang: string } }) => {
   }
 
   metadata.title = article.title[lang];
-  metadata.description = article.description[lang];
+  metadata.description = article.description ? article.description[lang] : "";
 
   const MDXContent = dynamic(
-    () => import(`@/data/articles/${id}/${lang}.mdx`),
+    () => import(`@/data/blogs/${id}/${lang}.mdx`),
     {
       ssr: false,
     }

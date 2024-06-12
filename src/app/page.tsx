@@ -7,6 +7,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  redirect("/en");
+  redirect("/en/blogs");
   return null;
 }
