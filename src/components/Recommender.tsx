@@ -1,5 +1,5 @@
 import React from "react";
-import { Language } from "../data/blogs/index";
+import { Language } from "@/data";
 import Link from "next/link";
 
 interface Props {
