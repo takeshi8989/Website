@@ -27,7 +27,7 @@ const Article = ({ params }: { params: { id: string; lang: string } }) => {
   }
 
   metadata.title = article.title[lang];
-  metadata.description = article.description[lang];
+  metadata.description = article.description ? article.description[lang] : "";
 
   const MDXContent = dynamic(
     () => import(`@/data/blogs/${id}/${lang}.mdx`),
