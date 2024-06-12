@@ -18,7 +18,7 @@ const data: Article[] = [
   {
     id: "planned-happenstance",
     en: false,
-    ja: true,
+    ja: false,
     author: "Takeshi Hashimoto",
     created_at: "2024-02-25",
     updated_at: "2024-02-25",
@@ -84,7 +84,7 @@ const data: Article[] = [
   {
     id: "how-we-shape-ourselves",
     en: false,
-    ja: true,
+    ja: false,
     author: "Takeshi Hashimoto",
     created_at: "2024-02-29",
     updated_at: "2024-02-29",
@@ -106,7 +106,7 @@ const data: Article[] = [
   {
     id: "ai-and-capitalism",
     en: false,
-    ja: true,
+    ja: false,
     author: "Takeshi Hashimoto",
     created_at: "2024-03-02",
     updated_at: "2024-03-02",
@@ -128,7 +128,7 @@ const data: Article[] = [
   {
     id: "the-power-of-unconscious-mind",
     en: false,
-    ja: true,
+    ja: false,
     author: "Takeshi Hashimoto",
     created_at: "2024-04-01",
     updated_at: "2024-04-01",
