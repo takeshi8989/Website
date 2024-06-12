@@ -75,7 +75,7 @@ const LocaleHome = () => {
           ))}
         </ul>
       </div>
-      <form className="mt-16" onSubmit={handleSubmit} ref={formRef}>
+      {/* <form className="mt-16" onSubmit={handleSubmit} ref={formRef}>
         <p className="text-black mb-4">
           {lang === "ja"
             ? "匿名で感想などが送れるようにしてますのでぜひ。"
@@ -97,7 +97,7 @@ const LocaleHome = () => {
             {!submitLoading ? "Send" : "Sending..."}
           </button>
         )}
-      </form>
+      </form> */}
     </div>
   );
 };
