@@ -1,10 +1,9 @@
+import data from "../../data/index.json"
 
 const Home = () => {
-  return (
-    <div>
-      Home, updated
-    </div>
-  )
+  console.log(data);
+
+  return <div>Home, updated</div>;
 };
 
 export default Home;
