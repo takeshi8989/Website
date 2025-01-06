@@ -1,143 +1,111 @@
-import React, { FC, useMemo, useState } from "react";
-import Fuse from "fuse.js";
-import data from "../../data/index.json";
+import { FC, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import data from "../../data/index.json";
+import HighlightedText from "../components/HighlightedText";
 
-// Define the shape of each article in your JSON
 interface Article {
   title: string;
   body: string;
 }
 
-// Fuse's result object shape for TypeScript
-interface FuseMatch {
-  indices: [number, number][];
-  key: string;
-  value: string;
-  arrayIndex?: number;
-}
-
-interface FuseResult {
-  item: Article;
-  matches?: FuseMatch[];
-}
-
 const Home: FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  // Configure Fuse.js
-  const fuseOptions = useMemo(
-    () => ({
-      keys: ["title", "body"],
-      includeMatches: true,
-      threshold: 0.25,
-    }),
-    []
-  );
+  const filteredArticles = useMemo(() => {
+    if (!searchTerm.trim()) {
+      return data;
+    }
 
-  // Create a Fuse instance (use useMemo to avoid re-creating on every render)
-  const fuse = useMemo(
-    () => new Fuse<Article>(data, fuseOptions),
-    [fuseOptions]
-  );
+    const lowerSearch = searchTerm.toLowerCase();
 
-  // If searchTerm is empty, we map each data item to a fuse-like result { item: ... }
-  const results: FuseResult[] = searchTerm
-    ? fuse.search(searchTerm)
-    : data.map((item) => ({ item }));
+    return data.filter(
+      (item: Article) =>
+        item.title.toLowerCase().includes(lowerSearch) ||
+        item.body.toLowerCase().includes(lowerSearch)
+    );
+  }, [searchTerm]);
 
   return (
     <div style={{ padding: "1rem" }}>
-      <h1>Search Articles (Fuzzy)</h1>
+      <h1>Search Articles</h1>
       <input
         type="text"
         placeholder="Search..."
-        style={{ width: 200, marginBottom: "1rem" }}
+        style={{
+          width: "100%",
+          maxWidth: "400px",
+          padding: "0.5rem",
+          marginBottom: "1rem",
+        }}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      {/* Render our custom search results */}
-      <div>
-        {results.length === 0 ? (
-          <p>No Results</p>
-        ) : (
-          results.map((res) => (
-            <ArticleResult key={res.item.title} result={res} />
-          ))
-        )}
-      </div>
-    </div>
-  );
-};
-
-// A component to display each article result with a bold/large title and smaller highlighted snippet
-interface ArticleResultProps {
-  result: FuseResult;
-}
-
-const ArticleResult: FC<ArticleResultProps> = ({ result }) => {
-  const { item, matches } = result;
-
-  return (
-    <div style={{ marginBottom: "2rem" }}>
-      {/* Large, bold title */}
-      <Link
-        to={`/ja/${item.title}`}
-        style={{
-          fontWeight: "bold",
-          fontSize: "1.5rem",
-          marginBottom: "0.5rem",
-        }}
-      >
-        {item.title}
-      </Link>
-
-      {/* If no searchTerm (meaning no 'matches'), show nothing or show full body, etc. 
-          For demonstration, let's only show snippet if we have matches. */}
-      {matches ? (
-        // We only care about matches on "body"
-        matches
-          .filter((m) => m.key === "body")
-          .map((m, idx) => (
-            <HighlightedSnippet key={idx} text={m.value} indices={m.indices} />
-          ))
+      {filteredArticles.length === 0 ? (
+        <p>No matching articles.</p>
       ) : (
-        // No search -> no snippet (or could display full text if you want)
-        <p style={{ fontSize: "0.9rem", margin: 0 }}>
-          {item.body.slice(0, 100)}...
-        </p>
+        <div>
+          {filteredArticles.map((article) => (
+            <div key={article.title} style={{ marginBottom: "2rem" }}>
+              <h2
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "1.5rem",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                <Link to={`/ja/${encodeURIComponent(article.title)}`}>
+                  <HighlightedText
+                    text={article.title}
+                    highlight={searchTerm}
+                  />
+                </Link>
+              </h2>
+
+              <div style={{ fontSize: "0.9rem" }}>
+                {extractHighlightedSnippet(article.body, searchTerm)}
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
 };
 
-// A functional component to highlight the matched substring(s)
-interface HighlightedSnippetProps {
-  text: string;
-  indices: [number, number][];
-}
-
-const HighlightedSnippet: FC<HighlightedSnippetProps> = ({ text, indices }) => {
-  const elements: React.ReactNode[] = [];
-  let lastIndex = 0;
-
-  for (const [start, end] of indices) {
-    // Push any text before this match
-    if (lastIndex < start) {
-      elements.push(text.slice(lastIndex, start));
-    }
-    // Push the matched text wrapped in <mark>
-    elements.push(<mark key={start}>{text.slice(start, end + 1)}</mark>);
-    lastIndex = end + 1;
+/**
+ * Extracts a snippet from the body that includes the first occurrence of the search term.
+ * Highlights the matched term.
+ */
+const extractHighlightedSnippet = (body: string, searchTerm: string) => {
+  if (!searchTerm.trim()) {
+    // Return the first 200 characters if no search term
+    return <p>{body.slice(0, 200)}...</p>;
   }
 
-  // Push any remaining text after the last match
-  if (lastIndex < text.length) {
-    elements.push(text.slice(lastIndex));
+  const lowerBody = body.toLowerCase();
+  const lowerSearch = searchTerm.toLowerCase();
+  const index = lowerBody.indexOf(lowerSearch);
+
+  if (index === -1) {
+    // If not found, return the first 200 characters
+    return <p>{body.slice(0, 200)}...</p>;
   }
 
-  return <p style={{ fontSize: "0.9rem", margin: 0 }}>{elements}</p>;
+  // Define snippet length
+  const snippetLength = 100;
+  const start = Math.max(index - snippetLength / 2, 0);
+  const end = start + snippetLength;
+
+  const snippet = body.slice(start, end);
+
+  return (
+    <p>
+      {start > 0 && "... "}
+      <HighlightedText text={snippet} highlight={searchTerm} />
+      {end < body.length && " ..."}
+    </p>
+  );
 };
 
 export default Home;
