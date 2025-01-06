@@ -15,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
+        <Route index element={innerRoutes} />
         <Route path=":lang/*" element={innerRoutes} />
       </Routes>
     </BrowserRouter>
