@@ -1,25 +1,50 @@
-import { Link } from "react-router-dom";
-import data from "../../data/index.json";
+import React, { FC, useMemo, useState } from "react";
 import Fuse from "fuse.js";
-import { useMemo, useState } from "react";
+import data from "../../data/index.json";
+import { Link } from "react-router-dom";
 
-const Home = () => {
+// Define the shape of each article in your JSON
+interface Article {
+  title: string;
+  body: string;
+}
+
+// Fuse's result object shape for TypeScript
+interface FuseMatch {
+  indices: [number, number][];
+  key: string;
+  value: string;
+  arrayIndex?: number;
+}
+
+interface FuseResult {
+  item: Article;
+  matches?: FuseMatch[];
+}
+
+const Home: FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  // Configure Fuse.js options
-  const fuseOptions = {
-    keys: ["title", "body"], // which fields to search in
-    includeMatches: true,
-    threshold: 0.3, // how fuzzy the match should be (0 = exact, 1 = very fuzzy)
-  };
+  // Configure Fuse.js
+  const fuseOptions = useMemo(
+    () => ({
+      keys: ["title", "body"],
+      includeMatches: true,
+      threshold: 0.25,
+    }),
+    []
+  );
 
-  // Create a Fuse instance (use useMemo so we don't re-instantiate on every render)
-  const fuse = useMemo(() => new Fuse(data, fuseOptions), [data]);
-  const results = searchTerm
+  // Create a Fuse instance (use useMemo to avoid re-creating on every render)
+  const fuse = useMemo(
+    () => new Fuse<Article>(data, fuseOptions),
+    [fuseOptions]
+  );
+
+  // If searchTerm is empty, we map each data item to a fuse-like result { item: ... }
+  const results: FuseResult[] = searchTerm
     ? fuse.search(searchTerm)
     : data.map((item) => ({ item }));
-
-  console.log(results);
 
   return (
     <div style={{ padding: "1rem" }}>
@@ -32,80 +57,87 @@ const Home = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      <ul>
-        {Array.isArray(results) ? (
-          <SearchResults results={results} />
-        ) : (
+      {/* Render our custom search results */}
+      <div>
+        {results.length === 0 ? (
           <p>No Results</p>
+        ) : (
+          results.map((res) => (
+            <ArticleResult key={res.item.title} result={res} />
+          ))
         )}
-      </ul>
+      </div>
     </div>
   );
 };
 
-function SearchResults({ results }) {
-  return (
-    <ul>
-      {results.map((res) => {
-        // If it's from fuse.search(), it has { item, matches }
-        // If it's the fallback for empty searchTerm, it’s just an object like { item: dataItem }
-        const { item, matches } = res;
-        if (!matches) {
-          // No fuzzy search performed, just show the title
-          return (
-            <li key={item.title}>
-              <h4>{item.title}</h4>
-              {/* Maybe no snippet if no searchTerm */}
-            </li>
-          );
-        }
-
-        // We do have matches
-        const matchedLines = matches
-          .filter((m) => m.key === "body")
-          .map((m) => ({
-            lineIndex: m.arrayIndex,
-            lineValue: m.value,
-            indices: m.indices,
-          }));
-
-        // Deduplicate lines if needed
-        const uniqueMatchesByLine = Array.from(
-          new Map(matchedLines.map((l) => [l.lineIndex, l])).values()
-        );
-
-        return (
-          <li key={item.title}>
-            <h4>{item.title}</h4>
-            {uniqueMatchesByLine.map((match) => (
-              <div key={match.lineIndex}>
-                {highlightMatch(match.lineValue, match.indices)}
-              </div>
-            ))}
-          </li>
-        );
-      })}
-    </ul>
-  );
+// A component to display each article result with a bold/large title and smaller highlighted snippet
+interface ArticleResultProps {
+  result: FuseResult;
 }
 
-function highlightMatch(line, indicesArray) {
-  // same logic as above
-  let elements = [];
+const ArticleResult: FC<ArticleResultProps> = ({ result }) => {
+  const { item, matches } = result;
+
+  return (
+    <div style={{ marginBottom: "2rem" }}>
+      {/* Large, bold title */}
+      <Link
+        to={`/ja/${item.title}`}
+        style={{
+          fontWeight: "bold",
+          fontSize: "1.5rem",
+          marginBottom: "0.5rem",
+        }}
+      >
+        {item.title}
+      </Link>
+
+      {/* If no searchTerm (meaning no 'matches'), show nothing or show full body, etc. 
+          For demonstration, let's only show snippet if we have matches. */}
+      {matches ? (
+        // We only care about matches on "body"
+        matches
+          .filter((m) => m.key === "body")
+          .map((m, idx) => (
+            <HighlightedSnippet key={idx} text={m.value} indices={m.indices} />
+          ))
+      ) : (
+        // No search -> no snippet (or could display full text if you want)
+        <p style={{ fontSize: "0.9rem", margin: 0 }}>
+          {item.body.slice(0, 100)}...
+        </p>
+      )}
+    </div>
+  );
+};
+
+// A functional component to highlight the matched substring(s)
+interface HighlightedSnippetProps {
+  text: string;
+  indices: [number, number][];
+}
+
+const HighlightedSnippet: FC<HighlightedSnippetProps> = ({ text, indices }) => {
+  const elements: React.ReactNode[] = [];
   let lastIndex = 0;
 
-  for (const [start, end] of indicesArray) {
+  for (const [start, end] of indices) {
+    // Push any text before this match
     if (lastIndex < start) {
-      elements.push(line.slice(lastIndex, start));
+      elements.push(text.slice(lastIndex, start));
     }
-    elements.push(<mark key={start}>{line.slice(start, end + 1)}</mark>);
+    // Push the matched text wrapped in <mark>
+    elements.push(<mark key={start}>{text.slice(start, end + 1)}</mark>);
     lastIndex = end + 1;
   }
-  if (lastIndex < line.length) {
-    elements.push(line.slice(lastIndex));
+
+  // Push any remaining text after the last match
+  if (lastIndex < text.length) {
+    elements.push(text.slice(lastIndex));
   }
 
-  return <>{elements}</>;
-}
+  return <p style={{ fontSize: "0.9rem", margin: 0 }}>{elements}</p>;
+};
 
 export default Home;
