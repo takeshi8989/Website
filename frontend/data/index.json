@@ -1,5 +1,9 @@
 [
   {
+    "title": "japanese-post",
+    "body": "# 日本語です\n\n日本語で記事を書いた場合検索がうまくいくかどうか、りんご"
+  },
+  {
     "title": "readme",
     "body": "# This is README\n\nExample Markdown file.\n\nOptions\n- Hello\n- Good Morning\n- Good night\n\n**Thank you!**"
   },
