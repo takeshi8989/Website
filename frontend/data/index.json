@@ -1,9 +1,5 @@
 [
   {
-    "title": "post1",
-    "body": "# Post1\n\nTesting..."
-  },
-  {
     "title": "readme",
     "body": "# This is README\n\nExample Markdown file.\n\nOptions\n- Hello\n- Good Morning\n- Good night\n\n**Thank you!**"
   },
